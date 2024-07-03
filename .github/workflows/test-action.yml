@@ -1,0 +1,14 @@
+name: Test Action
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo to use the action locally
+        uses: actions/checkout@v4
+
+      - name: Run my own container action
+        uses: ./
