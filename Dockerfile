@@ -10,4 +10,4 @@ RUN bundle install
 
 COPY . .
 
-CMD ["./entrypoint.rb"]
+CMD ["bundle exec ruby ./entrypoint.rb"]
