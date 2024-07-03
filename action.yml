@@ -1,0 +1,10 @@
+name: Test Summary Action
+description: A GitHub Action to summarize JUnit tests in a Gradle project
+
+branding:
+  icon: award
+  color: green
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
