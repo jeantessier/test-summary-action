@@ -4,8 +4,8 @@ def generate_report(out)
   out.puts "| Subproject | Status | Tests | Passed | Skipped | Failures | Errors |"
   out.puts "|------------|:------:|:-----:|:------:|:-------:|:--------:|:------:|"
 
-  Dir.glob('*/build/test-results/test/TEST-*.xml')
-     .group_by {|name| name.split(%'/', 2).first}
+  Dir.glob('/github/workspace/*/build/test-results/test/TEST-*.xml')
+     .group_by {|name| name.split(%'/', 5)[3]}
      .each do |group, test_results|
         docs = test_results.map do |name|
           File.open(name) {|f| Nokogiri::XML f}
