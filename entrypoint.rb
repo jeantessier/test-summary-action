@@ -35,25 +35,12 @@ def generate_report(out)
       end
   end
 
-def dump_env(out)
-  out.puts "| Name | Value |"
-  out.puts "|------|-------|"
-
-  ENV.sort.each do |name, value|
-    out.puts "| #{name} | #{value} |"
-  end
-end
-
 # Main
 
 if ENV.has_key?"GITHUB_STEP_SUMMARY"
   File.open(ENV["GITHUB_STEP_SUMMARY"], "a") do |f|
-    dump_env f
-    f.puts
     generate_report f
   end
 else
-  dump_env STDOUT
-  puts
   generate_report STDOUT
 end
