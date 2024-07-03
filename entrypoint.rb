@@ -4,8 +4,16 @@ def generate_report(out)
   out.puts "| Subproject | Status | Tests | Passed | Skipped | Failures | Errors |"
   out.puts "|------------|:------:|:-----:|:------:|:-------:|:--------:|:------:|"
 
-  Dir.glob('/github/workspace/*/build/test-results/test/TEST-*.xml')
-     .group_by {|name| name.split(%'/', 5)[3]}
+  path_prefix = if ENV.has_key?('GITHUB_WORKSPACE')
+                  ENV['GITHUB_WORKSPACE'] + "/"
+                elsif Dir.exist?("/github/workspace")
+                  "/github/workspace/"
+                else
+                  ""
+                end
+
+  Dir.glob("#{path_prefix}*/build/test-results/test/TEST-*.xml")
+     .group_by {|name| name.slice(path_prefix.size..).split(%'/', 2).first}
      .each do |group, test_results|
         docs = test_results.map do |name|
           File.open(name) {|f| Nokogiri::XML f}
