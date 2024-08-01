@@ -2,17 +2,9 @@
 
 require 'nokogiri'
 
-def generate_report(out)
+def generate_report(path_prefix, out)
   out.puts "| Subproject | Status | Tests | Passed | Skipped | Failures | Errors |"
   out.puts "|------------|:------:|:-----:|:------:|:-------:|:--------:|:------:|"
-
-  path_prefix = if ENV.has_key?('GITHUB_WORKSPACE')
-                  ENV['GITHUB_WORKSPACE'] + "/"
-                elsif Dir.exist?("/github/workspace")
-                  "/github/workspace/"
-                else
-                  ""
-                end
 
   Dir.glob("#{path_prefix}*/build/test-results/test/TEST-*.xml")
      .group_by {|name| name.slice(path_prefix.size..).split(%'/', 2).first}
@@ -32,15 +24,24 @@ def generate_report(out)
         status = counts[:failures] == 0 && counts[:errors] == 0
 
         out.puts "| #{group} | #{status ? ":white_check_mark:" : ":x:"} | #{counts[:tests]} | #{counts[:passed]} | #{counts[:skipped]} | #{counts[:failures]} | #{counts[:errors]} |"
-      end
-  end
+     end
+end
 
 # Main
 
+path_prefix = case
+              when ENV.has_key?('GITHUB_WORKSPACE')
+                ENV['GITHUB_WORKSPACE'] + "/"
+              when Dir.exist?("/github/workspace")
+                "/github/workspace/"
+              else
+                ""
+              end
+
 if ENV.has_key?"GITHUB_STEP_SUMMARY"
-  File.open(ENV["GITHUB_STEP_SUMMARY"], "a") do |f|
-    generate_report f
+  File.open(ENV["GITHUB_STEP_SUMMARY"], "a") do |out|
+    generate_report path_prefix, out
   end
 else
-  generate_report STDOUT
+  generate_report path_prefix, STDOUT
 end
