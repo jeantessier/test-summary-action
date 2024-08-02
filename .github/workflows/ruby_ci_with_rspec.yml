@@ -30,5 +30,11 @@ jobs:
       with:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-    - name: Run RSpec tests
-      run: ./bin/rspec --format documentation >> $GITHUB_STEP_SUMMARY
+    - name: Run RSpec
+      run: ./bin/rspec --format json --out tmp/rspec_results.json
+
+    - name: Generate RSpec report
+      uses: SonicGarden/rspec-report-action@v5
+      with:
+        json-path: tmp/rspec_results.json
+      if: always()
