@@ -11,7 +11,7 @@ class ReportGenerator
     out.puts "| Subproject | Status | Tests | Passed | Skipped | Failures | Errors |"
     out.puts "|------------|:------:|:-----:|:------:|:-------:|:--------:|:------:|"
 
-    Dir.glob("#{path_prefix}*/build/test-results/test/TEST-*.xml")
+    Dir.glob("#{path_prefix}**/{TEST,test}-*.xml")
        .group_by {|name| name.slice(path_prefix.size..).split(%'/', 2).first}
        .each do |group, test_results|
       docs = test_results.map do |name|
