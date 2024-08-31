@@ -23,4 +23,4 @@ COPY . .
 
 # GitHub Actions resets WORKDIR to /github/workspace, so we have to reference
 # the install path directl.
-CMD ["/usr/src/app/entrypoint.rb"]
+CMD ["ruby", "-I", "/usr/src/app/lib", "/usr/src/app/entrypoint.rb"]

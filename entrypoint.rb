@@ -1,6 +1,6 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby -I lib
 
-require './lib/report_generator'
+require 'report_generator'
 
 path_prefix = case
               when ENV.has_key?('GITHUB_WORKSPACE')
