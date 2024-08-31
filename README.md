@@ -43,22 +43,3 @@ It will produce a summary table like the following.
 | integration-tests | :white_check_mark: |  714  |  714   |    0    |    0     |   0    |
 | lib               |        :x:         | 2250  |  2248  |    0    |    2     |   0    |
 | webapp            | :white_check_mark: |  72   |   0    |   72    |    0     |   0    |
-
-### Source
-
-It assumes a normal layout for multi-project Gradle setups.  It looks for JUnit
-results files in `*/build/test-results/test/TEST-*.xml`.  If your results files
-are at another location, you can point the action to them using its `source`
-input.
-
-```yaml
-jobs:
-  build:
-    steps:
-    - // Other steps
-    - name: Summarize tests results
-      uses: jeantessier/test-summary-action@v1.0.5
-      with:
-        source: results/test-output-*.xml
-      if: ${{ always() }}
-```

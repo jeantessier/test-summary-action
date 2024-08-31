@@ -11,9 +11,7 @@ path_prefix = case
                 ""
               end
 
-source = ARGV.first
-
-report_generator = ReportGenerator.new path_prefix, source
+report_generator = ReportGenerator.new path_prefix
 
 if ENV.has_key?"GITHUB_STEP_SUMMARY"
   File.open(ENV["GITHUB_STEP_SUMMARY"], "a") do |out|
