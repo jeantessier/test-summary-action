@@ -1,5 +1,12 @@
 name: Test Summary Action
 description: A GitHub Action to summarize JUnit tests in a Gradle project
+author: Jean Tessier
+
+inputs:
+  source:
+    default: "*/build/test-results/test/TEST-*.xml"
+    description: JUnit results files to summarize
+    required: false
 
 branding:
   icon: award
@@ -8,3 +15,5 @@ branding:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.source }}

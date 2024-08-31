@@ -2,16 +2,18 @@ require 'nokogiri'
 
 class ReportGenerator
   attr_reader :path_prefix
+  attr_reader :source
 
-  def initialize(path_prefix)
+  def initialize(path_prefix, source)
     @path_prefix = path_prefix
+    @source = source
   end
 
   def generate_report(out)
     out.puts "| Subproject | Status | Tests | Passed | Skipped | Failures | Errors |"
     out.puts "|------------|:------:|:-----:|:------:|:-------:|:--------:|:------:|"
 
-    Dir.glob("#{path_prefix}*/build/test-results/test/TEST-*.xml")
+    Dir.glob(path_prefix + source)
        .group_by {|name| name.slice(path_prefix.size..).split(%'/', 2).first}
        .each do |group, test_results|
       docs = test_results.map do |name|
