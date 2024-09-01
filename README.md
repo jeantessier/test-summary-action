@@ -29,7 +29,7 @@ jobs:
       run: ./gradlew build
 
     - name: Summarize tests results
-      uses: jeantessier/test-summary-action@v1.0.5
+      uses: jeantessier/test-summary-action@v1
       if: ${{ always() }}
 ```
 
