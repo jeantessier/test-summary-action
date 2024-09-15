@@ -23,7 +23,7 @@ class ReportGenerator
     skipped: 'testcase[skipped]',
     failures: 'testcase[failure]',
     errors: 'testcase[error]',
-  }
+  }.freeze
 
   def process(out, group, test_results)
     docs = test_results.map do |name|
@@ -45,7 +45,15 @@ class ReportGenerator
   end
 
   def print_group(out, group, counts)
-    status = (counts[:failures]).zero? && (counts[:errors]).zero? ? ':white_check_mark:' : ':x:'
-    out.puts "| #{group} | #{status} | #{counts[:tests]} | #{counts[:passed]} | #{counts[:skipped]} | #{counts[:failures]} | #{counts[:errors]} |"
+    stats = [
+      group,
+      (counts[:failures]).zero? && (counts[:errors]).zero? ? ':white_check_mark:' : ':x:',
+      counts[:tests],
+      counts[:passed],
+      counts[:skipped],
+      counts[:failures],
+      counts[:errors],
+    ]
+    out.puts "| #{stats.join(' | ')} |"
   end
 end
