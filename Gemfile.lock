@@ -2,8 +2,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    brakeman (6.2.1)
-      racc
     diff-lcs (1.5.1)
     json (2.7.2)
     language_server-protocol (3.17.0.3)
@@ -72,7 +70,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  brakeman
   nokogiri
   rspec
   rubocop
