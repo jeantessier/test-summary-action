@@ -1,7 +1,17 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   NewCops: enable
+  Exclude:
+    - 'bin/**/*'
 
 # Your own specialized rules go here
+
+Style/EmptyCaseCondition:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
 
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
