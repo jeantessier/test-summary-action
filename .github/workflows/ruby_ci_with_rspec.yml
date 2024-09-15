@@ -23,7 +23,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
 
-      - bundle install
+      - run: bundle install
 
       - name: Lint code for consistent style
         run: ./bin/rubocop -f github
