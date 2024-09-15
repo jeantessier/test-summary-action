@@ -8,27 +8,44 @@ class ReportGenerator
   end
 
   def generate_report(out)
-    out.puts '| Subproject | Status | Tests | Passed | Skipped | Failures | Errors |'
-    out.puts '|------------|:------:|:-----:|:------:|:-------:|:--------:|:------:|'
+    print_headers(out)
 
     Dir.glob("#{path_prefix}**/{TEST,test}-*.xml")
        .group_by { |name| name.slice(path_prefix.size..).split(%(/), 2).first }
-       .each do |group, test_results|
-          docs = test_results.map do |name|
-            File.open(name) { |f| Nokogiri::XML f }
-          end
+       .each { |group, test_results| process(out, group, test_results) }
+  end
 
-          counts = {
-            tests: docs.map { |doc| doc.xpath('count(//testcase)') }.sum.to_i,
-            passed: docs.map { |doc| doc.xpath('count(//testcase[not(*)])') }.sum.to_i,
-            skipped: docs.map { |doc| doc.xpath('count(//testcase[skipped])') }.sum.to_i,
-            failures: docs.map { |doc| doc.xpath('count(//testcase[failure])') }.sum.to_i,
-            errors: docs.map { |doc| doc.xpath('count(//testcase[error])') }.sum.to_i,
-          }
+  private
 
-          status = (counts[:failures]).zero? && (counts[:errors]).zero?
+  COUNT_XPATHS = {
+    tests: 'testcase',
+    passed: 'testcase[not(*)]',
+    skipped: 'testcase[skipped]',
+    failures: 'testcase[failure]',
+    errors: 'testcase[error]',
+  }
 
-          out.puts "| #{group} | #{status ? ':white_check_mark:' : ':x:'} | #{counts[:tests]} | #{counts[:passed]} | #{counts[:skipped]} | #{counts[:failures]} | #{counts[:errors]} |"
-      end
+  def process(out, group, test_results)
+    docs = test_results.map do |name|
+      File.open(name) { |f| Nokogiri::XML f }
+    end
+
+    counts = COUNT_XPATHS.transform_values { |xpath| count(docs, xpath) }
+
+    print_group(out, group, counts)
+  end
+
+  def count(docs, xpath)
+    docs.map { |doc| doc.xpath("count(//#{xpath})") }.sum.to_i
+  end
+
+  def print_headers(out)
+    out.puts '| Subproject | Status | Tests | Passed | Skipped | Failures | Errors |'
+    out.puts '|------------|:------:|:-----:|:------:|:-------:|:--------:|:------:|'
+  end
+
+  def print_group(out, group, counts)
+    status = (counts[:failures]).zero? && (counts[:errors]).zero? ? ':white_check_mark:' : ':x:'
+    out.puts "| #{group} | #{status} | #{counts[:tests]} | #{counts[:passed]} | #{counts[:skipped]} | #{counts[:failures]} | #{counts[:errors]} |"
   end
 end
