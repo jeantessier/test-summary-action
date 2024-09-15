@@ -30,9 +30,11 @@ class ReportGenerator
       File.open(name) { |f| Nokogiri::XML f }
     end
 
-    counts = COUNT_XPATHS.transform_values { |xpath| count(docs, xpath) }
+    print_group(out, group, counts(docs))
+  end
 
-    print_group(out, group, counts)
+  def counts(docs)
+    COUNT_XPATHS.transform_values { |xpath| count(docs, xpath) }
   end
 
   def count(docs, xpath)
