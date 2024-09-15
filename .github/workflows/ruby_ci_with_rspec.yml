@@ -13,28 +13,40 @@ on:
 
 jobs:
 
-  build:
+  lint:
 
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
     - name: Checkout the repo
       uses: actions/checkout@v4
-      with:
-        ref: ${{ github.event.head_commit.id }}
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+        bundler-cache: true
 
-    - name: Run RSpec
-      run: ./bin/rspec --format json --out tmp/rspec_results.json
+    - name: Lint code for consistent style
+      run: ./bin/rubocop -f github
 
-    - name: Generate RSpec report
-      uses: SonicGarden/rspec-report-action@v5
-      with:
-        json-path: tmp/rspec_results.json
-      if: always()
+  rspec:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run RSpec
+        run: ./bin/rspec --format json --out tmp/rspec_results.json
+
+      - name: Generate RSpec report
+        uses: SonicGarden/rspec-report-action@v5
+        with:
+          json-path: tmp/rspec_results.json
+        if: always()
