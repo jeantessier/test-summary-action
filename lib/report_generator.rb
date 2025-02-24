@@ -3,6 +3,14 @@ require 'nokogiri'
 class ReportGenerator
   attr_reader :path_prefix
 
+  COUNT_XPATHS = {
+    tests: 'testcase',
+    passed: 'testcase[not(*)]',
+    skipped: 'testcase[skipped]',
+    failures: 'testcase[failure]',
+    errors: 'testcase[error]',
+  }.freeze
+
   def initialize(path_prefix)
     @path_prefix = path_prefix
   end
@@ -16,14 +24,6 @@ class ReportGenerator
   end
 
   private
-
-  COUNT_XPATHS = {
-    tests: 'testcase',
-    passed: 'testcase[not(*)]',
-    skipped: 'testcase[skipped]',
-    failures: 'testcase[failure]',
-    errors: 'testcase[error]',
-  }.freeze
 
   def process(out, group, test_results)
     docs = test_results.map do |name|
@@ -49,7 +49,7 @@ class ReportGenerator
   def print_group(out, group, counts)
     stats = [
       group,
-      (counts[:failures]).zero? && (counts[:errors]).zero? ? ':white_check_mark:' : ':x:',
+      counts[:failures].zero? && counts[:errors].zero? ? ':white_check_mark:' : ':x:',
       counts[:tests],
       counts[:passed],
       counts[:skipped],
