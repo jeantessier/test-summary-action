@@ -9,7 +9,7 @@
 #     $ docker push jeantessier/test-summary-action:latest
 #
 
-FROM ruby:latest
+FROM ruby:3.4.2
 
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
