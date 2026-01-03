@@ -2,7 +2,7 @@ name: Publish Docker Image
 
 on:
   push:
-    tags: ['v*']
+    tags: ['v1.*']
 
 jobs:
 
@@ -29,4 +29,5 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}:v1
             ghcr.io/${{ github.repository }}:latest
