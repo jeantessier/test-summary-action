@@ -2,9 +2,7 @@ name: Publish Docker Image
 
 on:
   push:
-    branches: [main]
     tags: ['v*']
-  workflow_dispatch:
 
 jobs:
 
@@ -30,5 +28,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}:latest
