@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -44,7 +44,7 @@ jobs:
         run: ./bin/rspec --format json --out tmp/rspec_results.json
 
       - name: Generate RSpec report
-        uses: SonicGarden/rspec-report-action@v5
+        uses: SonicGarden/rspec-report-action@v7
         with:
           json-path: tmp/rspec_results.json
         if: always()

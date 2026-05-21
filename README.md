@@ -16,15 +16,15 @@ jobs:
   build:
     steps:
     - name: Checkout the repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Set up JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: '17'
         distribution: 'temurin'
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v5
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
