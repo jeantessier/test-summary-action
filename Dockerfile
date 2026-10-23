@@ -22,5 +22,5 @@ RUN bundle install
 COPY . .
 
 # GitHub Actions resets WORKDIR to /github/workspace, so we have to reference
-# the install path directl.
+# the install path directly.
 CMD ["ruby", "-I", "/usr/src/app/lib", "/usr/src/app/entrypoint.rb"]
